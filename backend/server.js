@@ -51,6 +51,8 @@ io.on("connection", (socket) => {
 
         // Join the room
         socket.join(roomId);
+        // Store the active battle room
+        socket.data.activeBattle = roomId;
 
         const players = io.sockets.adapter.rooms.get(roomId).size;
 
@@ -71,9 +73,26 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("disconnect", () => {
-        console.log("User disconnected:", socket.id);
+   // Before socket leaves its rooms
+socket.on("disconnecting", () => {
+
+    const roomId = socket.data.activeBattle;
+
+    if (!roomId) return;
+
+    socket.to(roomId).emit("opponent-disconnected", {
+        message: "Your opponent disconnected!",
+        playerId: socket.id
     });
+
+});
+// After socket has disconnected
+socket.on("disconnect", (reason) => {
+    console.log("User disconnected:", socket.id);
+    console.log("Reason:", reason);
+});
+
+
 });
 
 

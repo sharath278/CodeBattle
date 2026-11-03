@@ -20,3 +20,14 @@ socket.on("room-full", (data) => {
 socket.on("battle-ready", (data) => {
     console.log("Battle ready:", data.message);
 });
+
+
+// Opponent disconnection
+socket.on("opponent-disconnected", (data) => {
+console.log("Opponent disconnected:", data.message);
+});
+
+// Socket disconnection
+socket.on("disconnect", (reason) => {
+console.log("Disconnected from server:", reason);
+});
