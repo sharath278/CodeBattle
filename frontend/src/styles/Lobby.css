@@ -1,0 +1,145 @@
+.lobby-container {
+    min-height: 100vh;
+    background: #0b0f19;
+    color: #ffffff;
+    padding: 30px 7%;
+}
+
+.lobby-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #252b3b;
+}
+
+.lobby-navbar h2 {
+    color: #a78bfa;
+}
+
+.lobby-navbar span {
+    color: #9ca3af;
+}
+
+.lobby-content {
+    max-width: 950px;
+    margin: 60px auto;
+    text-align: center;
+}
+
+.lobby-heading h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.lobby-heading p {
+    color: #9ca3af;
+}
+
+.room-info {
+    margin: 35px auto;
+    padding: 20px;
+    max-width: 300px;
+    background: #171d2b;
+    border: 1px solid #343b50;
+    border-radius: 12px;
+}
+
+.room-info p {
+    color: #9ca3af;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.room-info h2 {
+    color: #a78bfa;
+    margin-top: 10px;
+    letter-spacing: 4px;
+}
+
+.players-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 35px;
+    margin-top: 50px;
+}
+
+.player-card {
+    width: 280px;
+    padding: 35px 20px;
+    background: #171d2b;
+    border: 1px solid #343b50;
+    border-radius: 16px;
+}
+
+.player-avatar {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.player-card h2 {
+    margin-bottom: 8px;
+}
+
+.player-card p {
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
+
+.player-status {
+    display: inline-block;
+    padding: 7px 18px;
+    background: #332b18;
+    color: #facc15;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.versus {
+    font-size: 25px;
+    font-weight: bold;
+    color: #a78bfa;
+}
+
+.lobby-footer {
+    margin-top: 45px;
+}
+
+.lobby-footer p {
+    color: #9ca3af;
+    margin-bottom: 20px;
+}
+
+.lobby-footer button {
+    padding: 14px 40px;
+    border: none;
+    border-radius: 8px;
+    background: #4b5563;
+    color: #d1d5db;
+    font-weight: bold;
+    cursor: not-allowed;
+}
+
+@media (max-width: 650px) {
+    .players-container {
+        flex-direction: column;
+    }
+
+    .player-card {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .versus {
+        font-size: 20px;
+    }
+}

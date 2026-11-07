@@ -1,0 +1,611 @@
+
+/* ==============================
+   DASHBOARD BASE
+================================ */
+
+.dashboard {
+    min-height: 100vh;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: #f1f5f9;
+
+    background:
+        radial-gradient(
+            ellipse at 15% 15%,
+            rgba(99, 102, 241, 0.13),
+            transparent 35%
+        ),
+        radial-gradient(
+            ellipse at 85% 65%,
+            rgba(124, 58, 237, 0.10),
+            transparent 35%
+        ),
+        #0b0f19;
+}
+
+/* ==============================
+   NAVBAR
+================================ */
+
+.navbar {
+    height: 76px;
+    padding: 0 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #202838;
+    background: #101624;
+
+    position: relative;
+    z-index: 1;
+
+    animation: slideDown 0.7s ease both;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 750;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    color: #818cf8;
+    font-size: 25px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a,
+.section-heading a {
+    text-decoration: none;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.nav-links a:hover,
+.section-heading a:hover {
+    color: #818cf8;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #6366f1;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+}
+
+/* ==============================
+   MAIN CONTENT
+================================ */
+
+.main-content {
+    max-width: 1200px;
+    margin: auto;
+    padding: 55px 25px;
+
+    position: relative;
+    z-index: 1;
+}
+
+/* ==============================
+   WELCOME SECTION
+================================ */
+
+.welcome-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 42px;
+
+    animation: fadeUp 0.8s ease both;
+}
+
+.welcome-label {
+    color: #818cf8;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.welcome-section h1 {
+    font-size: 32px;
+    margin: 12px 0;
+}
+
+.welcome-description {
+    color: #9ca3af;
+}
+
+.rank-card {
+    background: #171f30;
+    border: 1px solid #293449;
+    padding: 20px 35px;
+    border-radius: 12px;
+    min-width: 150px;
+
+    animation: fadeUp 0.9s ease both;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.rank-card:hover {
+    transform: translateY(-6px);
+    border-color: #818cf8;
+    box-shadow: 0 10px 35px rgba(99, 102, 241, 0.15);
+}
+
+.rank-card span,
+.stat-card span {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.rank-card h2 {
+    font-size: 30px;
+    color: #818cf8;
+    margin: 8px 0;
+}
+
+.rank-card p,
+.stat-card p {
+    color: #64748b;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* ==============================
+   BATTLE ACTION CARDS
+================================ */
+
+.battle-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.action-card {
+    background: #151d2c;
+    border: 1px solid #293449;
+    padding: 30px;
+    border-radius: 14px;
+
+    position: relative;
+    overflow: hidden;
+
+    transition:
+        transform 0.35s ease,
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.action-card::before {
+    content: "";
+    position: absolute;
+    top: -100px;
+    right: -100px;
+    width: 220px;
+    height: 220px;
+    background: rgba(99, 102, 241, 0.12);
+    filter: blur(65px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.action-card:hover {
+    transform: translateY(-9px);
+    border-color: #6366f1;
+    box-shadow: 0 18px 45px rgba(79, 70, 229, 0.13);
+}
+
+.action-card:hover::before {
+    opacity: 1;
+}
+
+.create-card {
+    animation: fadeUp 0.8s 0.15s ease both;
+}
+
+.join-card {
+    animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.action-icon {
+    display: inline-block;
+    font-size: 30px;
+    margin-bottom: 15px;
+    transition: transform 0.35s ease;
+}
+
+.action-card:hover .action-icon {
+    transform: scale(1.2) rotate(-8deg);
+}
+
+.action-card h2 {
+    font-size: 21px;
+    margin-bottom: 10px;
+}
+
+.action-card p {
+    color: #9ca3af;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 25px;
+}
+
+/* ==============================
+   PRIMARY BUTTON
+================================ */
+
+.primary-btn {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 7px;
+    font-weight: 600;
+    cursor: pointer;
+
+    position: relative;
+    overflow: hidden;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+.primary-btn:hover {
+    background: #4f46e5;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+}
+
+.primary-btn:active {
+    transform: scale(0.96);
+}
+
+.primary-btn span {
+    margin-left: 12px;
+}
+
+/* ==============================
+   JOIN INPUT
+================================ */
+
+.join-input {
+    display: flex;
+    gap: 10px;
+}
+
+.join-input input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    background: #0b1220;
+    border: 1px solid #334155;
+    border-radius: 7px;
+    color: white;
+    outline: none;
+}
+
+.join-input input:focus {
+    border-color: #818cf8;
+}
+
+.join-input button {
+    padding: 0 22px;
+    background: #293449;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.join-input button:hover {
+    background: #394861;
+    transform: translateY(-2px);
+}
+
+/* ==============================
+   STATISTICS
+================================ */
+
+.stats-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-top: 30px;
+}
+
+.stat-card {
+    background: #151d2c;
+    border: 1px solid #293449;
+    padding: 22px;
+    border-radius: 12px;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+
+    animation: fadeUp 0.7s ease both;
+}
+
+.stat-card:nth-child(1) {
+    animation-delay: 0.15s;
+}
+
+.stat-card:nth-child(2) {
+    animation-delay: 0.25s;
+}
+
+.stat-card:nth-child(3) {
+    animation-delay: 0.35s;
+}
+
+.stat-card:nth-child(4) {
+    animation-delay: 0.45s;
+}
+
+.stat-card:hover {
+    transform: translateY(-6px);
+    border-color: #6366f1;
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.10);
+}
+
+.stat-card h2 {
+    font-size: 27px;
+    margin: 12px 0;
+    transition: color 0.3s ease;
+}
+
+.stat-card:hover h2 {
+    color: #818cf8;
+}
+
+/* ==============================
+   RECENT BATTLES
+================================ */
+
+.bottom-section {
+    margin-top: 45px;
+    animation: fadeUp 0.9s 0.5s ease both;
+}
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.section-heading h2 {
+    font-size: 20px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    background: #151d2c;
+    border: 1px solid #293449;
+    border-radius: 12px;
+}
+
+.empty-state div {
+    font-size: 35px;
+}
+
+.empty-state h3 {
+    margin: 15px 0 8px;
+}
+
+.empty-state p {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+/* ==============================
+   CREATE BATTLE MODAL
+================================ */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+
+    background: rgba(0, 0, 0, 0.75);
+
+    display: grid;
+    place-items: center;
+
+    padding: 20px;
+
+    animation: fadeIn 0.25s ease both;
+    backdrop-filter: blur(8px);
+}
+
+.modal {
+    position: relative;
+    z-index: 1001;
+
+    width: 100%;
+    max-width: 420px;
+    padding: 35px;
+
+    background: #151d2c;
+    border: 1px solid #334155;
+    border-radius: 14px;
+
+    text-align: center;
+
+    animation: modalEnter 0.35s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.modal p {
+    color: #9ca3af;
+    line-height: 1.6;
+    margin: 15px 0 25px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.battle-code {
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #0b1220;
+    border: 1px dashed #6366f1;
+    border-radius: 8px;
+    color: #a5b4fc;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+/* ==============================
+   KEYFRAME ANIMATIONS
+================================ */
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+================================ */
+
+@media (max-width: 750px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .welcome-section {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .battle-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .welcome-section h1 {
+        font-size: 26px;
+    }
+
+}
+
+@media (max-width: 420px) {
+
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+
+    .profile span {
+        display: none;
+    }
+
+    .modal {
+        padding: 25px 20px;
+    }
+
+}
+
+/* ==============================
+   ACCESSIBILITY
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+}

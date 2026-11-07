@@ -1,9 +1,11 @@
+
 require("dotenv").config();
 
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
+const crypto = require("crypto");
 
 const connectDB = require("./config/db");
 
@@ -11,7 +13,10 @@ const app = express();
 const server = http.createServer(app);
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173"
+}));
+
 app.use(express.json());
 
 // HTTP route
@@ -30,51 +35,112 @@ const io = new Server(server, {
     }
 });
 
-// Socket connections
+const activeBattles = new Set();
+
+
+// Socket.IO connection
 io.on("connection", (socket) => {
+
     console.log("User connected:", socket.id);
 
-    socket.on("join-battle", (roomId) => {
 
-        // Check existing players in the room
-        const room = io.sockets.adapter.rooms.get(roomId);
-        const currentPlayers = room ? room.size : 0;
+    //create battle 
+    socket.on("create-battle", (callback) => {
 
-        // Reject third player
-        if (currentPlayers >= 2) {
-            socket.emit("room-full", {
-                message: "This battle room is already full!"
-            });
+    const roomId = "CB" + crypto.randomBytes(3).toString("hex").toUpperCase();
 
-            return;
-        }
+    activeBattles.add(roomId);
 
-        // Join the room
-        socket.join(roomId);
-        // Store the active battle room
-        socket.data.activeBattle = roomId;
+    socket.join(roomId);
 
-        const players = io.sockets.adapter.rooms.get(roomId).size;
+    socket.data.activeBattle = roomId;
 
-        console.log(`${socket.id} joined ${roomId}`);
+    console.log("Battle created:", roomId);
 
-        // Notify room members
-        io.to(roomId).emit("player-joined", {
-            playerId: socket.id,
-            playerCount: players
-        });
-
-        // Both players have joined
-        if (players === 2) {
-            io.to(roomId).emit("battle-ready", {
-                message: "Both players joined. Battle is ready!",
-                roomId
-            });
-        }
+    callback({
+        success: true,
+        roomId
     });
 
-   // Before socket leaves its rooms
-socket.on("disconnecting", () => {
+});
+
+  // join battle 
+  
+socket.on("join-battle", (roomId, callback) => {
+
+    // 1. Normalize room code
+    roomId = roomId.trim().toUpperCase();
+
+    // 2. Check whether the battle exists
+    if (!activeBattles.has(roomId)) {
+        callback({
+            success: false,
+            message: "Battle room not found!"
+        });
+        return;
+    }
+
+    // 3. Get current room and player count
+    const room = io.sockets.adapter.rooms.get(roomId);
+    const playerCount = room ? room.size : 0;
+
+    // 4. Check whether creator is still connected
+    if (playerCount === 0) {
+        callback({
+            success: false,
+            message: "Battle creator is no longer in the room!"
+        });
+        return;
+    }
+
+    // 5. Check room capacity
+    if (playerCount >= 2) {
+        callback({
+            success: false,
+            message: "Battle room is already full!"
+        });
+        return;
+    }
+
+    // 6. Join the room
+    socket.join(roomId);
+    socket.data.activeBattle = roomId;
+
+    // 7. Get updated player count
+    const players = io.sockets.adapter.rooms.get(roomId).size;
+
+    // 8. Notify all players about the new player
+    io.to(roomId).emit("player-joined", {
+        playerId: socket.id,
+        playerCount: players
+    });
+
+    // 9. Notify both players when room is full
+    if (players === 2) {
+        io.to(roomId).emit("battle-ready", {
+            message: "Both players joined. Battle is ready!",
+            roomId
+        });
+    }
+
+    console.log(`${socket.id} joined ${roomId}`);
+
+    // 10. Send acknowledgement to joining player
+    callback({
+        success: true,
+        message: "Successfully joined battle!",
+        roomId,
+        playerCount: players
+    });
+
+});
+
+
+
+
+
+   // disconnecting hanlder
+    socket.on("disconnecting", () => {
 
     const roomId = socket.data.activeBattle;
 
@@ -86,19 +152,20 @@ socket.on("disconnecting", () => {
     });
 
 });
-// After socket has disconnected
-socket.on("disconnect", (reason) => {
-    console.log("User disconnected:", socket.id);
-    console.log("Reason:", reason);
+
+    
+
+    socket.on("disconnect", (reason) => {
+        console.log("User disconnected:", socket.id);
+        console.log("Reason:", reason);
+    });
+
 });
-
-
-});
-
 
 // Start server
 const startServer = async () => {
     try {
+
         await connectDB();
 
         const PORT = process.env.PORT || 5000;
