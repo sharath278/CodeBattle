@@ -1,0 +1,201 @@
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+
+.auth-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background:
+        radial-gradient(circle at 15% 20%, rgba(124, 58, 237, 0.16), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(79, 70, 229, 0.13), transparent 35%),
+        #090d1a;
+    color: #f8fafc;
+    font-family: "DM Sans", sans-serif;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 40px;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 22px;
+    background: rgba(17, 24, 43, 0.92);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(16px);
+}
+
+.auth-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 11px;
+    margin-bottom: 38px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.brand-icon {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    box-shadow: 0 5px 20px rgba(124, 58, 237, 0.35);
+    font-size: 14px;
+    color: white;
+}
+
+.auth-heading {
+    margin-bottom: 28px;
+    text-align: center;
+}
+
+.auth-heading h1 {
+    margin: 0 0 9px;
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 29px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.auth-heading p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.auth-heading strong {
+    color: #c4b5fd;
+    overflow-wrap: anywhere;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.auth-card label {
+    margin-top: 8px;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.auth-card input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 15px;
+    border: 1px solid #29344d;
+    border-radius: 10px;
+    outline: none;
+    background: #0d1425;
+    color: #f8fafc;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.auth-card input::placeholder {
+    color: #64748b;
+}
+
+.auth-card input:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.14);
+}
+
+.auth-button {
+    width: 100%;
+    margin-top: 15px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(110deg, #7c3aed, #6366f1);
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
+}
+
+.auth-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.28);
+}
+
+.auth-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.auth-extra {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2px;
+}
+
+.auth-extra a,
+.auth-footer a {
+    color: #a78bfa;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-extra a {
+    font-size: 12px;
+}
+
+.auth-extra a:hover,
+.auth-footer a:hover {
+    color: #c4b5fd;
+}
+
+.auth-footer {
+    margin: 25px 0 0;
+    color: #94a3b8;
+    text-align: center;
+    font-size: 13px;
+}
+
+.error-message,
+.success-message {
+    margin-bottom: 18px;
+    padding: 12px 14px;
+    border-radius: 9px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.error-message {
+    border: 1px solid rgba(248, 113, 113, 0.25);
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+}
+
+.success-message {
+    border: 1px solid rgba(74, 222, 128, 0.25);
+    background: rgba(34, 197, 94, 0.1);
+    color: #86efac;
+}
+
+@media (max-width: 500px) {
+    .auth-page {
+        padding: 16px;
+    }
+
+    .auth-card {
+        padding: 28px 22px;
+    }
+
+    .auth-heading h1 {
+        font-size: 25px;
+    }
+}
