@@ -7,8 +7,8 @@ function VerifyOTP() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const email = location.state?.email;
-    const flow = location.state?.flow;
+    const email = location.state?.email; 
+    const flow = location.state?.flow; //verify-reset-otp
 
     const [otp, setOtp] = useState("");
     const [loading, setLoading] = useState(false);
@@ -35,7 +35,9 @@ function VerifyOTP() {
                 `http://localhost:5000/api/auth/${endpoint}`,
                 {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
                     body: JSON.stringify({ email, otp })
                 }
             );
@@ -43,18 +45,28 @@ function VerifyOTP() {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message || "OTP verification failed");
+                throw new Error(
+                    data.message || "OTP verification failed"
+                );
             }
 
             if (flow === "signup") {
                 navigate("/login", {
-                    state: { message: "Email verified! You can now sign in." }
+                    state: {
+                        message: "Email verified! You can now sign in.",
+                        email: email
+                    }
+                });
+            } else if (flow === "reset") {
+                navigate("/reset-password", {
+                    state: {
+                        resetToken: data.resetToken
+                    }
                 });
             } else {
-                navigate("/reset-password", {
-                    state: { resetToken: data.resetToken }
-                });
+                throw new Error("Invalid verification flow.");
             }
+
         } catch (err) {
             setError(err.message);
         } finally {
@@ -65,23 +77,45 @@ function VerifyOTP() {
     return (
         <div className="auth-page">
             <div className="auth-card">
+
+                {/* Brand */}
                 <div className="auth-brand">
                     <div className="brand-icon">CB</div>
                     <span>CodeBattle</span>
                 </div>
 
+                {/* Heading */}
                 <div className="auth-heading">
                     <h1>Verify your email</h1>
+
                     <p>
                         Enter the 6-digit OTP sent to{" "}
                         <strong>{email || "your email"}</strong>.
                     </p>
                 </div>
 
-                {error && <div className="error-message">{error}</div>}
+                {/* Spam Folder Notice */}
+                <div className="otp-notice">
+                    <span>📩</span>
+                    <p>
+                        Didn't receive the email? Please check your
+                        <strong> Spam or Junk folder </strong>
+                        as the OTP email may arrive there.
+                    </p>
+                </div>
 
+                {/* Error */}
+                {error && (
+                    <div className="error-message">
+                        {error}
+                    </div>
+                )}
+
+                {/* OTP Form */}
                 <form onSubmit={handleSubmit}>
+
                     <label>One-time password</label>
+
                     <input
                         type="text"
                         inputMode="numeric"
@@ -95,18 +129,28 @@ function VerifyOTP() {
                     />
 
                     <button
+                        type="submit"
                         className="auth-button"
                         disabled={loading || otp.length !== 6}
                     >
                         {loading ? "Verifying..." : "Verify OTP"}
                     </button>
+
                 </form>
 
+                {/* Back Navigation */}
                 <p className="auth-footer">
-                    <Link to={flow === "reset" ? "/forgot-password" : "/signup"}>
+                    <Link
+                        to={
+                            flow === "reset"
+                                ? "/forgot-password"
+                                : "/signup"
+                        }
+                    >
                         Go back
                     </Link>
                 </p>
+
             </div>
         </div>
     );

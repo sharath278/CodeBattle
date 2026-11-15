@@ -10,8 +10,22 @@ function Dashboard() {
 
     const navigate = useNavigate();
 
+    // Logout
+    const handleLogout = () => {
+        socket.disconnect();
+
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
+
+        navigate("/login", { replace: true });
+    };
+
     // Create Battle
     const createBattle = () => {
+
+         socket.auth = {
+        token: sessionStorage.getItem("token")
+    };
         socket.connect();
 
         socket.emit("create-battle", (response) => {
@@ -30,7 +44,10 @@ function Dashboard() {
             alert("Please enter a battle code");
             return;
         }
-
+        
+         socket.auth = {
+        token: sessionStorage.getItem("token")
+    };
         socket.connect();
 
         socket.emit("join-battle", roomCode.trim(), (response) => {
@@ -86,6 +103,13 @@ function Dashboard() {
                 <div className="profile">
                     <div className="avatar">S</div>
                     <span>Developer</span>
+
+                    <button
+                        className="logout-btn"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </button>
                 </div>
             </nav>
 
@@ -115,7 +139,6 @@ function Dashboard() {
                 {/* Battle Actions */}
                 <section className="battle-actions">
 
-                    {/* Create Battle */}
                     <div className="action-card create-card">
                         <div className="action-icon">⚔️</div>
 
@@ -134,7 +157,6 @@ function Dashboard() {
                         </button>
                     </div>
 
-                    {/* Join Battle */}
                     <div className="action-card join-card">
                         <div className="action-icon">🎮</div>
 

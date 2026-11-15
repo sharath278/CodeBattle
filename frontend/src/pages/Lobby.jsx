@@ -13,36 +13,106 @@ function Lobby() {
     );
 
     const [opponentDisconnected, setOpponentDisconnected] = useState(false);
+    const [battleReady, setBattleReady] = useState(false);
+    const [battleClosed, setBattleClosed] = useState(false);
+    const [battleStarted, setBattleStarted] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-
-        // When a new player joins
         const handlePlayerJoined = (data) => {
-            console.log("Player joined!");
-            console.log("Total players:", data.playerCount);
-
             setPlayerCount(data.playerCount);
             setOpponentDisconnected(false);
+            setBattleClosed(false);
         };
 
-        // When opponent disconnects
         const handleOpponentDisconnected = (data) => {
             console.log(data.message);
-            console.log("Disconnected player:", data.playerId);
 
             setPlayerCount(1);
             setOpponentDisconnected(true);
+            setBattleReady(false);
+            setBattleStarted(false);
         };
 
+        const handleBattleReady = (data) => {
+            console.log(data.message);
+
+            setPlayerCount(2);
+            setBattleReady(true);
+            setOpponentDisconnected(false);
+            setBattleClosed(false);
+        };
+
+        const handleBattleClosed = (data) => {
+            console.log(data.message);
+
+            setBattleClosed(true);
+            setBattleReady(false);
+            setBattleStarted(false);
+            setPlayerCount(1);
+        };
+
+        const handleBattleStarted = (data) => {
+            console.log("Battle started:", data);
+
+            setBattleStarted(true);
+            setBattleReady(false);
+        };
+
+        // Register listeners before requesting the current state
         socket.on("player-joined", handlePlayerJoined);
         socket.on("opponent-disconnected", handleOpponentDisconnected);
+        socket.on("battle-ready", handleBattleReady);
+        socket.on("battle-closed", handleBattleClosed);
+        socket.on("battle-started", handleBattleStarted);
+
+        socket.emit("get-battle-state", roomId, (response) => {
+            if (!response?.success) {
+                console.log(
+                    "Failed to get battle state:",
+                    response?.message
+                );
+                return;
+            }
+
+            const battle = response.battle;
+
+            setPlayerCount(battle.playerCount);
+            setBattleReady(battle.status === "ready");
+            setBattleStarted(battle.status === "in-progress");
+            setOpponentDisconnected(false);
+            setBattleClosed(false);
+        });
 
         return () => {
             socket.off("player-joined", handlePlayerJoined);
             socket.off("opponent-disconnected", handleOpponentDisconnected);
+            socket.off("battle-ready", handleBattleReady);
+            socket.off("battle-closed", handleBattleClosed);
+            socket.off("battle-started", handleBattleStarted);
         };
 
-    }, []);
+    }, [roomId]);
+
+
+    const handleStartBattle = () => {
+        if (loading || playerCount !== 2 || !battleReady) return;
+
+        setLoading(true);
+
+        socket.emit("start-battle", roomId, (response) => {
+            setLoading(false);
+
+            if (!response?.success) {
+                alert(response?.message || "Unable to start battle!");
+                return;
+            }
+
+            setBattleStarted(true);
+            setBattleReady(false);
+        });
+    };
+
 
     return (
         <div className="lobby-container">
@@ -73,7 +143,7 @@ function Lobby() {
                         <p>Room Creator</p>
 
                         <span className="player-status">
-                            Connected
+                            {battleClosed ? "Disconnected" : "Connected"}
                         </span>
                     </div>
 
@@ -86,11 +156,13 @@ function Lobby() {
                         <p>Opponent</p>
 
                         <span className="player-status">
-                            {opponentDisconnected
-                                ? "Disconnected"
-                                : playerCount === 2
-                                    ? "Connected"
-                                    : "Waiting"}
+                            {battleStarted
+                                ? "In Battle"
+                                : opponentDisconnected || battleClosed
+                                    ? "Disconnected"
+                                    : playerCount === 2
+                                        ? "Connected"
+                                        : "Waiting"}
                         </span>
                     </div>
 
@@ -99,15 +171,32 @@ function Lobby() {
                 <div className="lobby-footer">
 
                     <p>
-                        {opponentDisconnected
-                            ? "Your opponent disconnected!"
-                            : playerCount === 2
-                                ? "Both players connected! Ready for battle."
-                                : "Waiting for opponent to join..."}
+                        {battleClosed
+                            ? "The battle has been closed."
+                            : opponentDisconnected
+                                ? "Your opponent disconnected!"
+                                : battleStarted
+                                    ? "Battle started! Preparing coding environment..."
+                                    : battleReady
+                                        ? "Both players connected! Ready to start."
+                                        : "Waiting for opponent to join..."}
                     </p>
 
-                    <button disabled={playerCount !== 2}>
-                        Start Battle
+                    <button
+                        onClick={handleStartBattle}
+                        disabled={
+                            playerCount !== 2 ||
+                            !battleReady ||
+                            loading ||
+                            battleClosed ||
+                            battleStarted
+                        }
+                    >
+                        {loading
+                            ? "Starting..."
+                            : battleStarted
+                                ? "Battle Started"
+                                : "Start Battle"}
                     </button>
 
                 </div>

@@ -6,6 +6,7 @@ const initializeSocket = (io) => {
     io.on("connection", (socket) => {
 
         console.log("User connected:", socket.id);
+        console.log("Authenticated User:", socket.data.user.userId);
 
         // Register battle events
         registerBattleHandlers(io, socket);

@@ -357,6 +357,7 @@ const forgotPassword = async (req, res) => {
 
         // 3. Generate six-digit OTP
         const otp = crypto.randomInt(100000, 1000000).toString();
+        console.log(otp);
 
         // 4. Hash OTP
         const otpHash = crypto

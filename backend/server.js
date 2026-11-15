@@ -40,6 +40,32 @@ const io = new Server(server, {
     }
 });
 
+// Socket authentication
+const jwt = require("jsonwebtoken");
+
+io.use((socket, next) => {
+
+    const token = socket.handshake.auth.token;
+
+    if (!token) {
+        return next(new Error("Access denied. No token provided."));
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+        socket.data.user = {
+            userId: decoded.userId
+        };
+
+        next();
+
+    } catch (error) {
+        next(new Error("Invalid or expired token."));
+    }
+
+});
+
 // Initialize Socket.IO handlers
 initializeSocket(io);
 
