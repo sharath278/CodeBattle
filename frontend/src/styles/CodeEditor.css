@@ -1,0 +1,259 @@
+
+* {
+    box-sizing: border-box;
+}
+
+.coding-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #111318;
+    color: #e5e7eb;
+    overflow: hidden;
+}
+
+.coding-navbar {
+    height: 60px;
+    min-height: 60px;
+    padding: 0 24px;
+    background: #1c2028;
+    border-bottom: 1px solid #303640;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.coding-navbar h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.coding-room-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+    color: #aab2c0;
+}
+
+.live-status {
+    color: #4ade80;
+}
+
+.coding-workspace {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 38% 62%;
+    gap: 10px;
+    padding: 10px;
+}
+
+.problem-panel,
+.editor-panel {
+    min-width: 0;
+    min-height: 0;
+    background: #1c2028;
+    border: 1px solid #303640;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.problem-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-heading {
+    padding: 16px;
+    border-bottom: 1px solid #303640;
+}
+
+.panel-heading h2 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.problem-content {
+    padding: 20px;
+    overflow-y: auto;
+    line-height: 1.7;
+    color: #cbd5e1;
+}
+
+.problem-content h1 {
+    font-size: 23px;
+    color: #ffffff;
+    margin-top: 0;
+}
+
+.problem-content h3 {
+    font-size: 16px;
+    color: #ffffff;
+    margin-top: 24px;
+}
+
+.problem-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.problem-tags span {
+    padding: 4px 10px;
+    border-radius: 5px;
+    background: #303640;
+    color: #aab2c0;
+    font-size: 12px;
+}
+
+.problem-content pre {
+    background: #111318;
+    padding: 14px;
+    border-radius: 6px;
+    overflow-x: auto;
+    color: #93c5fd;
+}
+
+.problem-content ul {
+    padding-left: 22px;
+}
+
+.editor-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-toolbar {
+    height: 55px;
+    min-height: 55px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #303640;
+}
+
+.editor-toolbar h3 {
+    font-size: 15px;
+}
+
+.editor-toolbar select {
+    background: #303640;
+    color: white;
+    border: 1px solid #454d59;
+    padding: 8px 12px;
+    border-radius: 5px;
+    outline: none;
+}
+
+.monaco-container {
+    flex: 1;
+    min-height: 180px;
+}
+
+.execution-panel {
+    height: 220px;
+    min-height: 220px;
+    background: #191d24;
+    border-top: 1px solid #303640;
+    display: flex;
+    flex-direction: column;
+}
+
+.execution-tabs {
+    height: 42px;
+    display: flex;
+    border-bottom: 1px solid #303640;
+}
+
+.execution-tabs button {
+    padding: 0 18px;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.execution-tabs button.active {
+    color: #ffffff;
+    border-bottom: 2px solid #3b82f6;
+}
+
+.testcase-content,
+.output-content {
+    flex: 1;
+    min-height: 0;
+    padding: 12px 16px;
+}
+
+.testcase-content label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: #aab2c0;
+}
+
+.testcase-content textarea {
+    width: 100%;
+    height: 75px;
+    resize: none;
+    padding: 10px;
+    background: #111318;
+    color: white;
+    border: 1px solid #303640;
+    border-radius: 5px;
+    outline: none;
+}
+
+.output-content {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+.execution-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px 16px;
+    border-top: 1px solid #303640;
+}
+
+.execution-actions button {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 5px;
+    background: #303640;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.execution-actions button:disabled {
+    opacity: 0.65;
+}
+
+@media (max-width: 800px) {
+    .coding-page {
+        height: auto;
+        min-height: 100vh;
+        overflow: auto;
+    }
+
+    .coding-workspace {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .problem-panel {
+        min-height: 400px;
+    }
+
+    .editor-panel {
+        height: 650px;
+    }
+
+    .coding-room-info {
+        gap: 8px;
+        font-size: 11px;
+    }
+}
